@@ -6,7 +6,7 @@
 ## Integrantes del equipo
 
 [Nombres, apellidos, y usuario GitHub de los integrantes del equipo.]
->Zeqi, Lin, zeqilin
+>Zeqi, Lin, zeqilin\n
 >Miguel Lobo Ocaña, mloboo
 
 ## Objetivos del trabajo
