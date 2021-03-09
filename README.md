@@ -1,4 +1,4 @@
-# [Título del trabajo]
+# [Reproductor MP3]
 
 [Descripción breve del proyecto a realizar (2-3 frases).]
 >El trabajo consiste en un reproductor de musica que es capaz de reproducir canciones previamente guardados en formato MP3, la elección del cancion a reproducir se basa en los datos introducido por el usuario.
