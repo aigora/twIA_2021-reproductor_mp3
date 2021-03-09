@@ -8,6 +8,7 @@
 [Nombres, apellidos, y usuario GitHub de los integrantes del equipo.]
 >Zeqi, Lin, zeqilin
 >Miguel Lobo Ocaña, mloboo
+
 ## Objetivos del trabajo
 
 [Lista de los objetivos que se persiguen con el trabajo propuesto.]
