@@ -9,6 +9,8 @@
 >Zeqi, Lin, zeqilin
 >
 >Miguel Lobo Ocaña, mloboo
+>
+>Andrés Romero Souto, andresrosouto
 
 ## Objetivos del trabajo
 
