@@ -11,7 +11,8 @@
 >Miguel Lobo Ocaña, mloboo
 >
 >Andrés Romero Souto, andresrosouto
-
+>
+>Valeri Paola Ramirez Moreira
 ## Objetivos del trabajo
 
 [Lista de los objetivos que se persiguen con el trabajo propuesto.]
