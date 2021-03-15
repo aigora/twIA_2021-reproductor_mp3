@@ -14,7 +14,7 @@
 >
 >Valeri Paola Ramirez Moreira
 >
->Patrick Castillo Mogollón
+>Patrick Castillo Mogollón, arguor
 ## Objetivos del trabajo
 
 [Lista de los objetivos que se persiguen con el trabajo propuesto.]
