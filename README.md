@@ -22,3 +22,12 @@
 >2. guardar varias canciones en una biblioteca o fichero
 >3. diferenciar las canciones mediante datos introducidos
 >4. reproducir la cancion mediante botones controlado por arduino
+
+## Sensores y actuadores
+>Arduino: microcontrolador que establece conexiones del ordenador con los sensores y actuadores para ejecutar cierta tarea
+>
+>Módulo DFplayer mini: módulo reproductor de MP3
+>
+>Buzzer o altavoz: salida de la musica que va conectado al modulo DFplayer
+>
+>pulsador: sirve para empezar o pausar la canción
