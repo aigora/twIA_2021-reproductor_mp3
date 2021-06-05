@@ -1,46 +1,98 @@
-// Referencas a Bibliotecas
 #include "Arduino.h"
 #include "SoftwareSerial.h"
 #include "DFRobotDFPlayerMini.h"
-
-// Variables globales
+//Pulsadores
 const int s1 = 2; // pulsadores
 const int s2 = 3;
+const int s3 = 4;
+const int s4 = 5;
 int state1 = 0; // estados para las entradas digitales
 int last1 = 1;
 int state2 = 0;
 int last2 = 1;
+int state3 = 0;
+int last3 = 1;
+int state4 = 0;
+int last4 = 1;
+SoftwareSerial mySoftwareSerial(10, 11); // RX, TX
+DFRobotDFPlayerMini myDFPlayer;
+
 void setup()
 {
-  // Tareas de configuración 
-  Serial.begin(9600);
-   //volumen
+  mySoftwareSerial.begin(9600);
+  Serial.begin(115200);
+  Serial.println();
+  Serial.println(F("DFRobot DFPlayer Mini Demo"));
+  Serial.println(F("Initializing DFPlayer ... (May take 3~5 seconds)"));
+  if (!myDFPlayer.begin(mySoftwareSerial)) {  //Use softwareSerial to communicate with mp3.
+    Serial.println(F("Unable to begin:"));
+    Serial.println(F("1.Please recheck the connection!"));
+    Serial.println(F("2.Please insert the SD card!"));
+    while (true);
+  }
+  Serial.println(F("DFPlayer Mini online."));
+  myDFPlayer.setTimeOut(500); //Set serial communictaion time out 500ms
+  //----Set volume----
   myDFPlayer.volume(10);  //Set volume value (0~30).
-  //tipo de ecualizacion(pop, rock...) en este caso normal
+  myDFPlayer.volumeUp(); //Volume Up
+  myDFPlayer.volumeDown(); //Volume Down
+  //----Set different EQ----
   myDFPlayer.EQ(DFPLAYER_EQ_NORMAL);
-  //SD como almacenamiento de los archivos mp3
+  //----Set device we use SD as default----
   myDFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
   pinMode(s1, INPUT_PULLUP);
   pinMode(s2, INPUT_PULLUP);
+  pinMode(s3, INPUT_PULLUP);
+  pinMode(s4, INPUT_PULLUP);
 }
-
 void loop()
 {
-//acciones de los pulsadores(no definitivo)	
-   state1 = digitalRead(s1);
+  state1 = digitalRead(s1);
   state2 = digitalRead(s2);
+  state3 = digitalRead(s3);
+  state4 = digitalRead(s4);
+  //reproducir desde pausa o reposo
   if (state1 != last1) {
     if (state1 == HIGH) {
-      myDFPlayer.play(1);
+      myDFPlayer.start();
+      Serial.print(state1);
+
       delay(1000);
     }
+     
   }
   last1  = state1;
+  
+  // cancion siguiente
   if (state2 != last2 ) {
     if (state2 == HIGH) {
-      myDFPlayer.play(2);
+      myDFPlayer.next();
+    
       delay(1000);
     }
   }
   last2  = state2;
+  
+// cancion anterior
+ if (state3 != last3 ) {
+    if (state3 == HIGH) {
+      myDFPlayer.previous();
+    
+      delay(1000);
+    }
+  }
+  last3  = state3;
+  
+  //pausa
+  if (state4 != last4 ) {
+    if (state4 == HIGH) {
+      myDFPlayer.pause();
+    
+      delay(1000);
+    }
+  }
+  last4  = state4;
 }
+  
+
+
