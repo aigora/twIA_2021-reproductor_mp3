@@ -1,258 +1,175 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
+#include <string.h>
 #define DIM 20
 struct CANCION
 {
-	char* nombre;
-	char* artista;
-	char* genero;
+	char nombre[DIM];
+	char artista[DIM];
 };
 
-void AnadirCancion(struct CANCION*, int);
-void GuardarCancionesFichero(struct CANCION*,int);
-char* BuscarCancion(struct CANCION*,int);
-char* BuscarArtista(struct CANCION*,int);
-char* BuscarGenero(struct CANCION* ,int);
-void OrdenarCanciones(struct CANCION*,int);
-void OrdenarArtistas(struct CANCION*, int);
-void OrdenarGeneros(struct CANCION*,int);
-void ReproducirCancion(struct CANCION*,int);
-void ElegirCancion(struct CANCION*,int);
-//void menu(void);
+void GuardarCancionesFichero(struct CANCION);
+int BuscarCancion(struct CANCION,char*,int);
+int BuscarArtista(struct CANCION,char*,int);
 
 int main()
 {
-	struct CANCION canciones[DIM];
-	int contador;
-	int opcion;
+	int contador = 4;
+	int encontrar=0;
+	int opcion=0;
+	int i,j=0,k=0;
+	int resultado,resultado1;
+	char nombre[DIM];
+	char nombre1[DIM];
+	struct CANCION canciones[4] = {
+			{"Lose Yourself","Justin Bieber"},
+			{"Talking to the Moon","Bruno Mars"},
+			{"Leave the door open","Bruno Mars"},
+			{"Beautiful Mistakes","Maroon 5"}
+	};
+	for(i=0;i<4;i++)
+	{
+		GuardarCancionesFichero(canciones[i]);
+	}
 	
-	printf("Cuantas canciones quiere añadir?\n");
-	scanf("%d", &contador);
-	AnadirCancion(&canciones[DIM],contador);
-	GuardarCancionesFichero(&canciones[DIM],contador);
-	system("cls");
-
+	//menu
 	do
 	{
-		printf("\tBienvenido al menu\n\n");
-		printf("1.- Buscar cancion\n2.- Buscar artista\n3.- Buscar por genero\n4.- Ordenar las canciones alfabeticamente\n5.- Ordenar canciones por artista\n6.- Ordenar canciones por genero\n7.- Elegir cancion para reproducir\n0.- Salir");
-		scanf_s("%d", &opcion);
+		printf("********ESTE ES EL MENU**********\n");
+		printf("\n\t1.-Buscar Cancion\n\t2.-Buscar Artista\n\t3.- Reproducir Cancion\n\t0.-Salir\n\n");
+		scanf_s("%d",&opcion);
+		getchar();
+		system("cls");
 		switch (opcion)
 		{
-		case 1:
-		{
-			BuscarCancion(&canciones[DIM], contador);
-			break;
+			case 1: 
+			{
+				printf("Introduce el nombre de la cancion que desea buscar:");
+				gets(nombre);
+				do
+				{
+				    resultado= BuscarCancion(canciones[j],&nombre,j);
+					j++;
+				}while((resultado+1)!=j && j<=4);
+				j=0;
+				if(resultado>=0 && resultado<=3)
+				{
+				    printf("\n\n\nAqui esta la cancion que buscaba -----> ");
+					printf("  %s  de  %s\n\n",canciones[resultado].nombre,canciones[resultado].artista);
+				}
+				else
+				{
+					printf("No se ha encontrado su busqueda\n");
+				}
+				
+				
+				break;
+			}
+			case 2:
+			{
+				printf("Introduce el nombre del artista que desea buscar:");
+				gets(nombre1);
+				do
+				{
+					resultado1= BuscarArtista(canciones[k],&nombre1,k);
+				
+					if(resultado1>=0 && resultado1<=3)
+					{
+						encontrar++;
+						printf("\n\nAqui esta las canciones del artista que buscaba -----> ");
+						printf("  %s  de  %s\n",canciones[resultado1].nombre,canciones[resultado1].artista);
+					}
+					printf("\n");
+					k++;
+				}while(k<=4);
+				k=0;
+				if(encontrar==0)
+				{
+					printf("\nNo se ha encontrado su busqueda\n\n\n");
+				}
+				encontrar=0;
+				
+				break;
+			}
+			case 3:
+			{
+				printf("Yendo al reproductor de musica...\n");
+				
+				//funcion llamar a arduino
+				system("pause");
+				break;	
+			}
+			case 0:
+			{
+				printf("Saliendo del menu\n");
+				break;	
+			}
 		}
-		case 2:
-		{
-			BuscarArtista(&canciones[DIM],contador);
-			break;
-		}
-		case 3:
-		{
-			BuscarGenero(&canciones[DIM],contador);
-			break;
-		}
-		case 4:
-		{
-			OrdenarCanciones(&canciones[DIM],contador);
-			break;
-		}
-		case 5:
-		{
-			OrdenarArtista(&canciones[DIM],contador);
-			break;
-		}
-		case 6:
-		{
-			OrdenarGenero(&canciones[DIM],contador);
-			break;	
-		}
-		case 7:
-		{
-			ElegirCancion(&canciones[DIM],contador);
-			break;
-		}
-		case 0:
-		{
-			printf("Hasta luego,\n\t Cerrando programa...\n");
-			break;
-		}
-		}
-	} while (opcion != 0);
-
-
-	return;
+		
+	}while(opcion!=0);
+	
+	
+	return 0;
 }
 
-void AnadirCancion(struct CANCION* canciones[DIM],int contador)
+void GuardarCancionesFichero(struct CANCION canciones)
 {
-	int i;
-	
-	for (i = 0; i < contador; i++)
-	{
-		printf("Introduca los datos de la cancion que desea almcontador]acenar:\n");
-		printf("Nombre: ");
-		gets(canciones[i]->nombre);
-		getchar();
-		printf("Artista: ");
-		gets(canciones[i].artista);
-		getchar();
-		printf("Genero: ");
-		gets(canciones[i].genero);
-		getchar();
-	}
-	
-}
-
-void GuardarCancionesFichero(struct CANCION* canciones[DIM],int contador)
-{
-	FILE *fichero;
-	int i;
-	
-	fichero=fopen("Playlist.txt","w");
-	if (fichero==NULL)
-	    printf("No se ha podido abrir el fichero");
+	FILE* fichero;
+	int j;
+	fichero = fopen("Playlist.txt", "a");
+	if (fichero == NULL)
+		printf("No se ha podido abrir el fichero joder\n");
 	else
 	{
-		for(i=0;i<contador;i++)
+		for(j=0;canciones.nombre[j]!='\0';j++)
 		{
-			fprintf(fichero,"%s  %s  %s\n",canciones[i].nombre,canciones[i].artista,canciones[i].genero);
+			fprintf(fichero,"%c", canciones.nombre[j]);
 		}
+			
+		fprintf(fichero," \t");
+		
+		fprintf(fichero,"%s", canciones.artista);
+		fprintf(fichero," \n");
+		
 		fclose(fichero);
 	}
+		
+	return;
+	
 }
 
-char* BuscarCancion(struct CANCION* canciones[DIM],int contador)
+
+int BuscarCancion(struct CANCION canciones,char* nombre,int i)
 {
-	//FILE *fichero;
-	char nombre[25];
-	char* vector;
-	char cancion[25];
-	int igual;
-	int i;
+	int resultado=-1;
+	int orden;
+	char *cancion=canciones.nombre;
+	_strupr(nombre);
+	_strupr(cancion);
 	
-	printf("Introduce el nombre de la cancion que desea buscar:");
-	gets(nombre);
-	
-	//fichero=fopen("Playlist.txt","rt");
-	//fscanf(fichero,"&s",cancion);
-	do
+	orden=strcmp(nombre,cancion);
+	if (orden==0)
 	{
-		for(i=0;i<contador;i++)
-		{
-			if (nombre==canciones[i].nombre)
-			{
-				igual=1;
-				vector[0]=canciones[i].nombre;
-				vector[1]=canciones[i].artista;
-				vector[2]=canciones[i].genero;
-			}
-		}
-		if(igual ==0)
-		{
-			printf("No se ha encontrado su busqueda \n");
-			exit(1);
-		}
-	}while(igual!=1);
-	
-	return vector;
+		resultado=i;
+	}
+	return resultado;
 }
 
-char* BuscarArtista(struct CANCION* canciones[DIM],int contador)
+int BuscarArtista(struct CANCION canciones,char* nombre1,int i)
 {
-	//FILE *fichero;
-	char nombre[25];
-	char* vector;
-	char artista[25];
-	int igual;
-	int c=0;
-	int i;
+	int resultado1=-1;
+	int orden;
+	char *artista=canciones.artista;
 	
-	printf("Introduce el nombre del artista que desea buscar:");
-	gets(nombre);
+	_strupr(nombre1);
+	_strupr(artista);
 	
-	//fichero=fopen("Playlist.txt","rt");
-	//fscanf(fichero,"&s",cancion);
-	do
+	orden=strcmp(nombre1,artista);
+	if (orden==0)
 	{
-		for(i=0;i<contador;i++)
-		{
-			if (nombre==canciones[i].nombre)
-			{
-				igual=1;
-				vector[c]=canciones[i].nombre;
-				vector[c+1]=canciones[i].artista;
-				vector[c+2]=canciones[i].genero;
-				c=c+3;
-			}
-		}
-		if(igual ==0)
-		{
-			printf("No se ha encontrado su busqueda \n");
-			exit(1);
-		}
-	}while(igual!=1);
+		resultado1=i;
+	}
 	
-	return vector;
-}
-char* BuscarGenero(struct CANCION* canciones[DIM],int contador)
-{
-	//FILE *fichero;
-	char nombre[25];
-	char* vector;
-	char genero[25];
-	int igual;
-	int c=0;
-	int i;
-	
-	printf("Introduce el nombre del genero que desea buscar:");
-	gets(nombre);
-	
-	//fichero=fopen("Playlist.txt","rt");
-	//fscanf(fichero,"&s",cancion);
-	do
-	{
-		for(i=0;i<contador;i++)
-		{
-			if (nombre==canciones[i].genero)
-			{
-				igual=1;
-				vector[c]=canciones[i].nombre;
-				vector[c+1]=canciones[i].artista;
-				vector[c+2]=canciones[i].genero;
-				c=c+3;
-			}
-		}
-		if(igual ==0)
-		{
-			printf("No se ha encontrado su busqueda \n");
-			exit(1);
-		}
-	}while(igual!=1);
-	
-	return vector;
-}
-void OrdenarCanciones(struct CANCION* canciones[DIM],int contador)
-{
-	//30-40 lineas
-}
-void OrdenarArtistas(struct CANCION* canciones[DIM], int contador)
-{
-	//30-40 lineas
-}
-void OrdenarGeneros(struct CANCION* canciones[DIM],int contador)
-{
-	//30-40 lineas
-}
-
-void ReproducirCancion(struct CANCION* canciones[DIM],int contador)
-{
-	//mas de 50 lineas
-}
-void ElegirCancion(struct CANCION* canciones[DIM],int contador) 
-{
-	//40-50 lineas
+	return resultado1;
 }
