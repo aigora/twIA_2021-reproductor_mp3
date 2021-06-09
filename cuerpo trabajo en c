@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <string.h>
-#define DIM 20
+#define DIM 30
 struct CANCION
 {
 	char nombre[DIM];
@@ -40,6 +40,7 @@ int main()
 		printf("\n\t1.-Buscar Cancion\n\t2.-Buscar Artista\n\t3.- Reproducir Cancion\n\t0.-Salir\n\n");
 		scanf_s("%d", &opcion);
 		getchar();
+		//fflush(stdin);
 		system("cls");
 		switch (opcion)
 		{
@@ -49,7 +50,7 @@ int main()
 			gets_s(nombre,20);
 			do
 			{
-				resultado = BuscarCancion(canciones[j], &nombre, j);
+				resultado = BuscarCancion(canciones[j], nombre, j);
 				j++;
 			} while ((resultado + 1) != j && j <= 4);
 			j = 0;
@@ -72,7 +73,7 @@ int main()
 			gets_s(nombre1,20);
 			do
 			{
-				resultado1 = BuscarArtista(canciones[k], &nombre1, k);
+				resultado1 = BuscarArtista(canciones[k], nombre1, k);
 
 				if (resultado1 >= 0 && resultado1 <= 3)
 				{
@@ -116,8 +117,8 @@ void GuardarCancionesFichero(struct CANCION canciones)
 {
 	FILE* fichero;
 	errno_t error;
-	int j;
-	error = fopen_s(&fichero,"Playlist.txt", "w");
+	//int j;
+	error = fopen_s(&fichero,"Playlist.txt", "a");
 	if (error == 0)
 	{
 		fprintf(fichero, "%s", canciones.nombre);
@@ -151,8 +152,8 @@ int BuscarCancion(struct CANCION canciones, char* nombre, int i)
 	int resultado = -1;
 	int orden;
 	char* cancion = canciones.nombre;
-	_strupr_s(nombre,25);
-	_strupr_s(cancion,25);
+	_strupr_s(nombre,DIM);
+	_strupr_s(cancion,DIM);
 
 	orden = strcmp(nombre, cancion);
 	if (orden == 0)
@@ -168,8 +169,8 @@ int BuscarArtista(struct CANCION canciones, char* nombre1, int k)
 	int resultado1 = -1;
 	int orden;
 	char* artista = canciones.artista;
-	_strupr_s(nombre1,25);
-	_strupr_s(artista,25);
+	_strupr_s(nombre1,DIM);
+	_strupr_s(artista,DIM);
 
 	orden = strcmp(nombre1, artista);
 	if (orden == 0)
