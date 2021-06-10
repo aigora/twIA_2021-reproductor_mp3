@@ -1,3 +1,4 @@
+#include "SerialClass.h" // Biblioteca para acceder al puerto serie
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
@@ -12,6 +13,7 @@ struct CANCION
 void GuardarCancionesFichero(struct CANCION);
 int BuscarCancion(struct CANCION, char*, int);
 int BuscarArtista(struct CANCION, char*, int);
+void llamararduino(void);
 
 int main()
 {
@@ -23,7 +25,7 @@ int main()
 	char nombre[DIM];
 	char nombre1[DIM];
 	struct CANCION canciones[4] = {
-			{"Lose Yourself","Justin Bieber"},
+			{"Lose Yourself","Eminem"},
 			{"Talking to the Moon","Bruno Mars"},
 			{"Leave the door open","Bruno Mars"},
 			{"Beautiful Mistakes","Maroon 5"}
@@ -46,7 +48,7 @@ int main()
 		case 1:
 		{
 			printf("Introduce el nombre de la cancion que desea buscar:");
-			gets_s(nombre,20);
+			gets_s(nombre, 20);
 			do
 			{
 				resultado = BuscarCancion(canciones[j], nombre, j);
@@ -69,7 +71,7 @@ int main()
 		case 2:
 		{
 			printf("Introduce el nombre del artista que desea buscar:");
-			gets_s(nombre1,20);
+			gets_s(nombre1, 20);
 			do
 			{
 				resultado1 = BuscarArtista(canciones[k], nombre1, k);
@@ -97,6 +99,7 @@ int main()
 			printf("Yendo al reproductor de musica...\n");
 
 			//funcion llamar a arduino
+			llamararduino();
 			system("pause");
 			break;
 		}
@@ -118,7 +121,7 @@ void GuardarCancionesFichero(struct CANCION canciones)
 	FILE* fichero;
 	errno_t error;
 	//int j;
-	error = fopen_s(&fichero,"Playlist.txt", "a");
+	error = fopen_s(&fichero, "Playlist.txt", "a");
 	if (error == 0)
 	{
 		fprintf(fichero, "%s", canciones.nombre);
@@ -129,10 +132,10 @@ void GuardarCancionesFichero(struct CANCION canciones)
 
 		fclose(fichero);
 	}
-		
+
 	else
 	{
-		printf("No se ha podido abrir el fichero joder\n");	
+		printf("No se ha podido abrir el fichero\n");
 	}
 
 	return;
@@ -142,7 +145,7 @@ void GuardarCancionesFichero(struct CANCION canciones)
 int BuscarCancion(struct CANCION canciones, char* nombre, int i)
 {
 	int resultado = -1;
-	int orden,j;
+	int orden, j;
 	char* cancion = canciones.nombre;
 
 	for (j = 0; nombre[j] != '\0'; j++)
@@ -167,9 +170,9 @@ int BuscarCancion(struct CANCION canciones, char* nombre, int i)
 int BuscarArtista(struct CANCION canciones, char* nombre1, int k)
 {
 	int resultado1 = -1;
-	int orden,j;
+	int orden, j;
 	char* artista = canciones.artista;
-	
+
 	for (j = 0; nombre1[j] != '\0'; j++)
 	{
 		if (nombre1[j] >= 'a' && nombre1[j] <= 'z')
@@ -186,4 +189,30 @@ int BuscarArtista(struct CANCION canciones, char* nombre1, int k)
 		resultado1 = k;
 	}
 	return resultado1;
+}
+
+void llamararduino(void)
+{
+Serial* Arduino;
+char puerto[]="COM5"; // Puerto serie en el que está conectado Arduino
+char BufferEntrada[200];
+int bytesRecibidos;
+
+Arduino = new Serial((char *)puerto); // Crea conexión lógica con Arduino
+if(Arduino->IsConnected())
+printf("Arduino conectado\n");
+else
+printf("Error\n");
+while(Arduino->IsConnected())
+{
+
+ bytesRecibidos = Arduino->ReadData(BufferEntrada, sizeof(char)*199);
+ if (bytesRecibidos != -1) // Lectura de mensaje desde el puerto
+ {
+ BufferEntrada[bytesRecibidos - 1] = '\0';
+ printf(" %s\n",BufferEntrada);
+ }
+ else
+ Sleep(1000);
+ }
 }
