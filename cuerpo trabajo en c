@@ -40,7 +40,6 @@ int main()
 		printf("\n\t1.-Buscar Cancion\n\t2.-Buscar Artista\n\t3.- Reproducir Cancion\n\t0.-Salir\n\n");
 		scanf_s("%d", &opcion);
 		getchar();
-		//fflush(stdin);
 		system("cls");
 		switch (opcion)
 		{
@@ -113,6 +112,7 @@ int main()
 	return 0;
 }
 
+
 void GuardarCancionesFichero(struct CANCION canciones)
 {
 	FILE* fichero;
@@ -132,51 +132,58 @@ void GuardarCancionesFichero(struct CANCION canciones)
 		
 	else
 	{
-		/*
-		for (j = 0; canciones.nombre[j] != '\0'; j++)
-		{
-			fprintf(fichero, "%c", canciones.nombre[j]);
-		}
-		*/
-		printf("No se ha podido abrir el fichero joder\n");
-		
+		printf("No se ha podido abrir el fichero joder\n");	
 	}
 
 	return;
-
 }
 
 
 int BuscarCancion(struct CANCION canciones, char* nombre, int i)
 {
 	int resultado = -1;
-	int orden;
+	int orden,j;
 	char* cancion = canciones.nombre;
-	_strupr_s(nombre,DIM);
-	_strupr_s(cancion,DIM);
+
+	for (j = 0; nombre[j] != '\0'; j++)
+	{
+		if (nombre[j] >= 'a' && nombre[j] <= 'z')
+			nombre[j] = nombre[j] - 'a' + 'A';
+	}
+	for (j = 0; cancion[j] != '\0'; j++)
+	{
+		if (cancion[j] >= 'a' && cancion[j] <= 'z')
+			cancion[j] = cancion[j] - 'a' + 'A';
+	}
 
 	orden = strcmp(nombre, cancion);
 	if (orden == 0)
 	{
 		resultado = i;
 	}
-
 	return resultado;
 }
 
 int BuscarArtista(struct CANCION canciones, char* nombre1, int k)
 {
 	int resultado1 = -1;
-	int orden;
+	int orden,j;
 	char* artista = canciones.artista;
-	_strupr_s(nombre1,DIM);
-	_strupr_s(artista,DIM);
-
+	
+	for (j = 0; nombre1[j] != '\0'; j++)
+	{
+		if (nombre1[j] >= 'a' && nombre1[j] <= 'z')
+			nombre1[j] = nombre1[j] - 'a' + 'A';
+	}
+	for (j = 0; artista[j] != '\0'; j++)
+	{
+		if (artista[j] >= 'a' && artista[j] <= 'z')
+			artista[j] = artista[j] - 'a' + 'A';
+	}
 	orden = strcmp(nombre1, artista);
 	if (orden == 0)
 	{
 		resultado1 = k;
 	}
-
 	return resultado1;
 }
